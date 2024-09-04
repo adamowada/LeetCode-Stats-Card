@@ -13,11 +13,9 @@
         "lib"
     ],
     "scripts": {
-        "test": "vitest --coverage --coverage.include src",
-        "prepare": "husky",
         "build": "esbuild src/core/index.ts --outfile=lib/index.js --bundle --format=esm --minify",
-        "format": "prettier --write . --ignore-path .gitignore",
-        "lint": "eslint ."
+        "start": "vercel dev",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
     "keywords": [
         "leetcode",

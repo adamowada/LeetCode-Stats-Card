@@ -1,7 +1,6 @@
-import { IncomingMessage, ServerResponse } from "http";
 import { handle } from "../src/cloudflare-worker/handler";
 
-export default async function handler(req: IncomingMessage, res: ServerResponse): Promise<void> {
+export default async function handler(req, res): Promise<void> {
     const request = new Request(req.url as string, {
         headers: req.headers as HeadersInit,
         method: req.method,

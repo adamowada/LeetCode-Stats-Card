@@ -15,15 +15,9 @@
     "scripts": {
         "test": "vitest --coverage --coverage.include src",
         "prepare": "husky",
-        "dev": "wrangler dev",
-        "build:worker": "esbuild src/cloudflare-worker/index.ts --outfile=dist/worker.js --bundle --minify --format=esm --loader:.html=text --keep-names",
-        "build:package": "esbuild src/core/index.ts --outfile=lib/index.js --bundle --format=esm --keep-names",
-        "build:image": "selflare compile --script dist/worker.js && docker compose build",
-        "build": "npm run build:worker && npm run build:package",
+        "build": "esbuild src/core/index.ts --outfile=lib/index.js --bundle --format=esm --minify",
         "format": "prettier --write . --ignore-path .gitignore",
-        "lint": "eslint .",
-        "deploy": "wrangler deploy",
-        "tail": "wrangler tail"
+        "lint": "eslint ."
     },
     "keywords": [
         "leetcode",

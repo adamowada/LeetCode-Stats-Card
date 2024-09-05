@@ -1,7 +1,0 @@
-{
-  "builds": [
-    { "src": "api/[username].ts", "use": "@vercel/node" },
-    { "src": "api/hello.ts", "use": "@vercel/node" },
-    { "src": "src/core/index.ts", "use": "@vercel/node" }
-  ]
-}

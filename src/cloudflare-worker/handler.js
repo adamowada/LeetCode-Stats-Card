@@ -1,8 +1,8 @@
-import { Router } from "itty-router";
-import { Config, Generator } from "../core";
-import demo from "./demo";
-import Header from "./headers";
-import { sanitize } from "./sanitize";
+const { Router } = require("itty-router");
+const { Config, Generator } = require("../core");
+const demo = require("./demo");
+const Header = require("./headers");
+const { sanitize } = require("./sanitize");
 
 const router = Router();
 
@@ -13,18 +13,18 @@ router.get("/favicon.ico", async () => {
     );
 });
 
-async function generate(config: Record<string, string>, req: Request): Promise<Response> {
-    let sanitized: Config;
+async function generate(config, req) {
+    let sanitized;
     try {
         sanitized = sanitize(config);
     } catch (err) {
-        return new Response((err as Error).message, {
+        return new Response(err.message, {
             status: 400,
         });
     }
     console.log("sanitized config", JSON.stringify(sanitized, null, 4));
 
-    const cache_time = parseInt(config.cache || "300") ?? 300;
+    const cache_time = parseInt(config.cache || "300") || 300;
     const cache = await caches.open("leetcode");
 
     const generator = new Generator(cache, {
@@ -41,24 +41,24 @@ async function generate(config: Record<string, string>, req: Request): Promise<R
 // handle path variable
 router.get("/:username", async (request) => {
     request.query.username = request.params.username;
-    return await generate(request.query as never, request);
+    return await generate(request.query, request);
 });
 
 // handle query string
-router.get("*", async (req: { query: Record<string, string> }) => {
+router.get("*", async (req) => {
     if (!req.query.username) {
         return new Response(demo, {
             headers: new Header().add("cors", "html"),
         });
     }
 
-    return await generate(req.query, req as unknown as Request);
+    return await generate(req.query, req);
 });
 
 // 404 for all other routes
 router.all("*", () => new Response("Not Found.", { status: 404 }));
 
-export async function handle(request: Request): Promise<Response> {
+export async function handle(request) {
     console.log(`${request.method} ${request.url}`);
     return router.handle(request);
 }
